@@ -6,7 +6,7 @@ export function App() {
   const navigate = useNavigate()
   return (
     <div className="py-10 max-w-[480px] px-5 mx-auto flex flex-col h-svh">
-      <div className="w-full flex items-center justify-center">
+      <div className="w-full flex items-center justify-center mb-8">
         <img className="w-28" src={logo} alt="logo" />
       </div>
       {/* <div className="w-full flex-1 flex items-center justify-center">
