@@ -1,4 +1,7 @@
-import { Trash } from 'lucide-react'
+import { Trash, ReceiptText } from 'lucide-react'
+import { Input } from './ui/input'
+import { ToggleMode } from './ui/toggle-mode'
+
 export function Items() {
   const MOCKUP_ITEMS = [
     { id: '1', description: 'Batata turbinada', unitValue: '50,99', qtd: '2' },
@@ -8,10 +11,30 @@ export function Items() {
   ]
   return (
     <>
-      <div className="border-2 border-blueish rounded-md p-4 gap-4 flex flex-row">
-        <span className="text-zinc-500 font-semibold text-sm">Descrição</span>
-        <span className="text-zinc-500 font-semibold text-sm">Valor unit.</span>
-        <span className="text-zinc-500 font-semibold text-sm">Qtd</span>
+      <div className="flex flex-row items-center justify-around gap-2 mb-4">
+        <ToggleMode />
+        <button
+          type="button"
+          className="bg-blueish rounded-lg justify-center items-center flex h-full px-3 hover:bg-blueish/90"
+        >
+          <ReceiptText className="size-7 text-snow" />
+        </button>
+      </div>
+      <div className="border-2 border-blueish rounded-md p-4 gap-2 grid grid-cols-7">
+        <div className="flex items-start justify-center flex-col gap-1 col-span-4">
+          <span className="text-zinc-500 font-semibold text-sm">Descrição</span>
+          <Input />
+        </div>
+        <div className="flex items-start justify-center flex-col gap-1 col-span-2">
+          <span className="text-zinc-500 font-semibold text-sm">
+            Valor unit.
+          </span>
+          <Input inputType="value" />
+        </div>
+        <div className="flex items-start justify-center flex-col gap-1">
+          <span className="text-zinc-500 font-semibold text-sm">Qtd</span>
+          <Input inputType="qtd" />
+        </div>
       </div>
       <button
         type="button"
@@ -20,7 +43,7 @@ export function Items() {
         Adicionar
       </button>
       <div>
-        <div className="flex flex-row text-zinc-500 text-sm items-center justify-between px-8 py-3">
+        <div className="flex flex-row text-zinc-500 text-sm items-center justify-between px-8 py-3 mt-3">
           <span className="font-semibold min-w-40">Descrição</span>
           <span className="font-semibold min-w-16 text-center">
             Valor unit.
