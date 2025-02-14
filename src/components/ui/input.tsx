@@ -60,13 +60,7 @@ export function Input({ inputType, size, ...props }: InputProps) {
 
     return ''
   }
-
-  function handlePlaceholder(inputType = 'text') {
-    if (inputType === 'text') return 'Batatinha'
-    if (inputType === 'value') return '0,00'
-    if (inputType === 'qtd') return '0'
-  }
-
+  
   return (
     <input
       {...props}
@@ -75,7 +69,7 @@ export function Input({ inputType, size, ...props }: InputProps) {
         setInputValue(handleInputChange(e.target.value, inputType))
       }
       min={0}
-      placeholder={handlePlaceholder(inputType)}
+      maxLength={20}
       value={inputValue}
     />
   )
