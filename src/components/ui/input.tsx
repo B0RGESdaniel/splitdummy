@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import type { ComponentProps } from 'react'
 import { tv, type VariantProps } from 'tailwind-variants'
 
@@ -21,10 +20,14 @@ const input = tv({
   },
 })
 
-type InputProps = VariantProps<typeof input> & ComponentProps<'input'>
+type InputValueProps = {
+  stateValue: string
+  setStateValue: React.Dispatch<React.SetStateAction<string>>
+}
 
-export function Input({ inputType, size, ...props }: InputProps) {
-  const [inputValue, setInputValue] = useState('')
+type InputProps = VariantProps<typeof input> & ComponentProps<'input'> & InputValueProps
+
+export function Input({ inputType, size, stateValue, setStateValue, ...props }: InputProps) {
 
   function handleInputChange(value: string, inputType = 'text') {
     if (inputType === 'text') return value
@@ -42,7 +45,7 @@ export function Input({ inputType, size, ...props }: InputProps) {
           .format(parsedNum / 100)
           .slice(2)
 
-        return result
+        return result.replace(/\s+/g, "")
       }
 
       return ''
@@ -66,11 +69,11 @@ export function Input({ inputType, size, ...props }: InputProps) {
       {...props}
       className={input({ inputType, size })}
       onChange={e =>
-        setInputValue(handleInputChange(e.target.value, inputType))
+        setStateValue(handleInputChange(e.target.value, inputType))
       }
       min={0}
       maxLength={20}
-      value={inputValue}
+      value={stateValue ? stateValue : ''}
     />
   )
 }

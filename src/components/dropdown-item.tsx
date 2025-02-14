@@ -7,8 +7,11 @@ type DropdownItemProps = {
   description: string
   value: string
   qtd: number
+  removeFn: () => void
+  increaseFn: () => void
+  decreaseFn: () => void
 }
-export function DropdownItem({ description, value, qtd }: DropdownItemProps) {
+export function DropdownItem({ description, value, qtd, removeFn, increaseFn, decreaseFn }: DropdownItemProps) {
   return (
     <Accordion.Root type="single" collapsible>
       <Accordion.Item value="item-1">
@@ -23,9 +26,16 @@ export function DropdownItem({ description, value, qtd }: DropdownItemProps) {
         <Accordion.Content>
           <div className="bg-zinc-800 rounded-md px-6 py-3 flex flex-row items-center">
             <div className="flex-1 flex justify-center">
-              <AddQtd qtd={qtd} />
+              <AddQtd 
+               qtd={qtd}
+               increaseFn={increaseFn}
+               decreaseFn={decreaseFn}
+              />
             </div>
-            <Trash className="size-5 text-red-500 cursor-pointer hover:text-red-500/70" />
+            <Trash 
+             className="size-5 text-red-500 cursor-pointer hover:text-red-500/70"
+             onClick={() => removeFn()}
+            />
           </div>
         </Accordion.Content>
       </Accordion.Item>

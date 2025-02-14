@@ -5,27 +5,18 @@ import {
   CheckIcon
 } from '@radix-ui/react-icons'
 
-export function Select() {
-  const items = [
-  "Cerveja Gelada",
-  "Caipirinha",
-  "Whisky com Gelo",
-  "Chopp Claro",
-  "Batata Frita",
-  "Bolinho de Bacalhau",
-  "Isca de Peixe",
-  "Frango a Passarinho",
-  "Torresmo Crocante",
-  "Pastel de Queijo",
-  "Onion Rings",
-  "Camarão Alho e Óleo",
-  "Queijo Coalho"
-  ];
+type SelectProps = {
+  placeholder?: string
+  list: { id: string, description: string }[]
+  selectFn: (id: string) => void
+}
+
+export function Select({ placeholder = 'Selecione um item', list, selectFn }: SelectProps) {
 
   return (
     <RSelect.Root>
       <RSelect.Trigger className='inline-flex flex-row items-center justify-between bg-zinc-600 rounded border-none shadow-inside px-3 py-2 text-sm font-normal box-border flex-1 data-[placeholder]:text-zinc-300'>
-      <RSelect.Value placeholder="Selecione um item" />
+      <RSelect.Value placeholder={placeholder} />
         <RSelect.Icon>
           <ChevronDownIcon />
         </RSelect.Icon>
@@ -36,16 +27,17 @@ export function Select() {
             <ChevronUpIcon />
           </RSelect.ScrollUpButton>
           <RSelect.Viewport>
-            { items.map(item => (
+            { list && list.map(item => (
               <RSelect.Item 
-                key={item} 
-                value={item}
+                key={item.id} 
+                value={item.description}
                 className='relative flex flex-row items-center pl-[25px] pr-[35px] py-2 gap-1 rounded-md select-none data-[disabled]:pointer-events-none data-[highlighted]:bg-blueish data-[highlighted]:outline-none leading-none'
+                onClick={() => selectFn(item.id)}
               >
                 <RSelect.ItemIndicator className='absolute left-0 inline-flex w-[25px] items-center justify-center'>
                   <CheckIcon />
                 </RSelect.ItemIndicator>
-                <RSelect.ItemText>{item}</RSelect.ItemText>
+                <RSelect.ItemText>{item.description}</RSelect.ItemText>
               </RSelect.Item>
             ))}
           </RSelect.Viewport>
