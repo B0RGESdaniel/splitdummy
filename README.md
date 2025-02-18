@@ -31,12 +31,6 @@ O valor total seria 30 reais(15 reais x 2 unidades). Se cada pessoa ficasse com 
 5. Acesse a página de conta finalizada para ver o valor final de cada participante
 
 ## Telas
-![alt text](https://github.com/[username]/[reponame]/blob/[branch]/image.jpg?raw=true)
-
-![image.png](https://github.com/b0rgesdaniel/[reponame]/blob/[branch]/image.jpg?raw=true)
-
-![image.png](image%201.png)
-
-![image.png](image%202.png)
-
-![image.png](image%203.png)
+Pessoas             |  Itens          |  Divisão          |  Conta
+:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
+![People page](https://github.com/B0RGESdaniel/splitdummy/blob/main/src/assets/readme-imgs/people.png)  | ![Items page](https://github.com/B0RGESdaniel/splitdummy/blob/main/src/assets/readme-imgs/items.png) | ![Divide page](https://github.com/B0RGESdaniel/splitdummy/blob/main/src/assets/readme-imgs/divide.png) | ![Receipt page](https://github.com/B0RGESdaniel/splitdummy/blob/main/src/assets/readme-imgs/receipt.png)
