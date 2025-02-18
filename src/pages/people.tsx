@@ -2,6 +2,7 @@ import { useState, useMemo } from "react"
 import { v4 as uuidv4 } from 'uuid'
 import { Input } from "../components/ui/input"
 import { Trash } from "lucide-react"
+import { toast } from "react-toastify"
 
 import { useLocalStorage } from "../hooks/useLocalStorage"
 import { Participant } from "../types/all-types"
@@ -14,7 +15,7 @@ export function People() {
   const participantsList = useMemo(() => getItem('participants'), [refresh])
 
   function handleAddParticipant(name: string) {
-    if (!name) return;
+    if (!name) return toast.error('Adicione o nome do participante');
 
     const uuid = uuidv4()
 

@@ -49,10 +49,10 @@ export function Divide() {
   }
 
   function handleIncreaseParts(idParticipant: string, idItem: string) {
-    if (!idItem) {
-      toast.error('Selecione um item')
-      return
-    }
+    if (!idItem) return toast.error('Selecione um item')
+    if (idItem && getItemAmount() === '0') 
+      return toast.error('Para dividir esse item adicione pelo menos uma quantidade')
+      
 
     if (!getAllParts() || getAllParts().length === 0) {
       setItem('parts', [{ idParticipant, idItem, part: 1 }])
@@ -80,14 +80,16 @@ export function Divide() {
   }
 
   function handleDecreaseParts(idParticipant: string, idItem: string) {
-    if (!idParticipant || !idItem) return;
+    if (!idItem) return toast.error('Selecione um item')
+    if (idItem && getItemAmount() === '0') 
+      return toast.error('Para dividir esse item adicione pelo menos uma quantidade')
 
     if (!getAllParts().find((part:Part) => 
       (part.idParticipant === idParticipant) && (part.idItem === idItem)
     )) return;
 
     const newList = getAllParts().map((part:Part) => 
-      (part.idParticipant === idParticipant) && (part.idItem === idItem) 
+      (part.idParticipant === idParticipant) && (part.idItem === idItem) && Number(part.part) > 0
       ? { ...part, part: String(Number(part.part) - 1) } 
       : part 
     )

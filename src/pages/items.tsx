@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import { toast } from 'react-toastify'
 
 import { Input } from '../components/ui/input'
 import { DropdownItem } from '../components/dropdown-item'
@@ -16,7 +17,9 @@ export function Items() {
   const itemsList = useMemo(() => getItem('items'), [refresh])
 
   function handleAddItem(description: string, value: string, amount: string) {
-    if (!description || !value || !amount) return;
+    if (!description) return toast.error('Adicione uma descrição');
+    if (!value) return toast.error('Adicione o valor unitário');
+    if (!amount) return toast.error('Adicione a quantidade');
 
     const uuid = uuidv4()
 
