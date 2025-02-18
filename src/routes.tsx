@@ -11,7 +11,7 @@ export function AppRoutes() {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/people" element={<People />} />
+        <Route path="/" element={<People />} />
         <Route path="/items" element={<Items />} />
         <Route path="/divide" element={<Divide />} />
         <Route path="/receipt" element={<Receipt />} />

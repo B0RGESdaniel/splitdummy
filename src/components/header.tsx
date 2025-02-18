@@ -9,6 +9,7 @@ export function Header() {
 
   function handleLocationPathname() {
     if (location.pathname === '/receipt') return ''
+    if (location.pathname === '/') return 'people'
     return location.pathname.replace('/', '')
   }
 
@@ -27,7 +28,7 @@ export function Header() {
         <ToggleGroup.Item
           value="people"
           className="flex flex-row gap-1 items-center justify-center text-zinc-500 px-2 py-2 min-w-20 flex-1 font-semibold data-selectedMode:bg-blueish data-selectedMode:text-snow rounded"
-          onClick={() => navigate('/people')}
+          onClick={() => navigate('/')}
         >
           <User className="size-4" />
           <span className="text-xs">Pessoas</span>

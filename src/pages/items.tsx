@@ -5,6 +5,7 @@ import { Input } from '../components/ui/input'
 import { DropdownItem } from '../components/dropdown-item'
 import { useLocalStorage } from '../hooks/useLocalStorage'
 import { Item } from '../types/all-types'
+import { EmptyList } from '../components/ui/empty-list'
 
 export function Items() {
   const { setItem, getItem } = useLocalStorage()
@@ -23,9 +24,17 @@ export function Items() {
 
     if (!items) {
       setItem('items', [{  id: uuid, description, unitPrice: value, amount }])
+      setDescriptionInput('')
+      setValueInput('')
+      setAmountInput('')
+      setRefresh(!refresh)
+      return;
     }
-    const newList = [...items, { id: uuid, description, unitPrice: value, amount }]
-    setItem('items', newList)
+
+    if (items) {
+      const newList = [...items, { id: uuid, description, unitPrice: value, amount }]
+      setItem('items', newList)
+    }
 
     setDescriptionInput('')
     setValueInput('')
@@ -98,7 +107,7 @@ export function Items() {
         Adicionar
       </button>
       <div>
-        { (itemsList) && (
+        { (itemsList && itemsList.length > 0) && (
           <div className="flex flex-row text-zinc-500 text-sm items-center justify-between px-6 py-3 mt-3">
             <span className="font-normal text-xs min-w-40">Descrição</span>
             <span className="font-normal text-xs min-w-12 text-start">
@@ -122,6 +131,7 @@ export function Items() {
           ))}
         </div>
       </div>
+      { !(itemsList && itemsList.length > 0) && <EmptyList text="Nenhum item adicionado" /> }
     </>
   )
 }

@@ -5,6 +5,7 @@ import { Trash } from "lucide-react"
 
 import { useLocalStorage } from "../hooks/useLocalStorage"
 import { Participant } from "../types/all-types"
+import { EmptyList } from "../components/ui/empty-list"
 
 export function People() {
   const { setItem, getItem } = useLocalStorage();
@@ -20,6 +21,8 @@ export function People() {
     const participants = getItem('participants')
     if (!participants) {
       setItem('participants', [{  id: uuid, name }])
+      setRefresh(!refresh)
+      return;
     }
     const newList = [...participants, { id: uuid, name }]
     setItem('participants', newList)
@@ -70,6 +73,7 @@ export function People() {
           </div>
         )) }
       </div>
+      { !(participantsList && participantsList.length > 0) && <EmptyList text="Nenhum participante adicionado" /> }
     </>
 
   )

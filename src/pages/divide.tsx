@@ -3,10 +3,9 @@ import { toast } from "react-toastify"
 
 import { AddQtd } from "../components/add-qtd"
 import { Select } from "../components/ui/select"
+import { EmptyList } from "../components/ui/empty-list"
 import { useLocalStorage } from "../hooks/useLocalStorage"
 import { Participant, Item, Part } from "../types/all-types"
-
-import emptyBox from '../assets/empty-box.svg'
 
 export function Divide() {
   const [idSelectItem, setIdSelectItem] = useState('');
@@ -55,7 +54,7 @@ export function Divide() {
       return
     }
 
-    if (!getAllParts()) {
+    if (!getAllParts() || getAllParts().length === 0) {
       setItem('parts', [{ idParticipant, idItem, part: 1 }])
       setRefresh(!refresh)
       return;
@@ -117,7 +116,8 @@ export function Divide() {
 
   return (
     <>
-      { (getAllParticipants().length > 0) && (
+      { ((getAllParticipants() && getAllParticipants().length > 0) 
+        && (getAllItems() && getAllItems().length > 0)) && (
         <>
           <div className="flex flex-row border-2 border-blueish w-full rounded-md py-4 px-2 gap-2 mb-2">
             <Select
@@ -152,12 +152,10 @@ export function Divide() {
           </div>
         </>
       )}
-      { (!getAllParticipants() || !getAllItems()) && (
-        <div className="w-full mt-40 flex text-sm flex-col gap-4 text-zinc-400 items-center justify-center text-center">
-          <img src={emptyBox} alt="empty box" />
-          <span>Nenhum {!getAllParticipants() ? 'participante' : 'item'} adicionado</span>
-        </div>
-      ) }
+      { !((getAllParticipants() && getAllParticipants().length > 0) 
+        && (getAllItems() && getAllItems().length > 0)) && 
+        <EmptyList text={`Nenhum ${!getAllParticipants() ? 'participante' : 'item'} adicionado`} /> 
+      }
     </>
   )
 }

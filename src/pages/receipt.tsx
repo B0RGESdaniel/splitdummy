@@ -5,9 +5,8 @@ import { useNavigate } from "react-router-dom"
 
 import { useLocalStorage } from "../hooks/useLocalStorage"
 import { Input } from "../components/ui/input"
+import { EmptyList } from "../components/ui/empty-list"
 import { Item, Part, Participant } from "../types/all-types"
-
-import emptyBox from '../assets/empty-box.svg'
 
 type FullItem = {
   itemId: string
@@ -60,8 +59,6 @@ export function Receipt() {
   function getParticipantItemPrice(part: number, partPrice: string) {
     return (part * Number(partPrice)).toFixed(2) ?? '0,00'
   }
-  
-  // todo fn finalizar conta
 
   function getParticipantItems(idParticipant: string) {
     return getFullItemList().filter(
@@ -116,12 +113,12 @@ export function Receipt() {
     removeItem('parts')
     removeItem('participants')
 
-    navigate('/people')
+    navigate('/')
   }
 
   return (
     <>
-      { getAllParticipants().length > 0 && (
+      { (getAllParticipants() && getAllParticipants().length > 0) && (
           <div className="flex flex-col align-center">
             { getNotDivivedItems().length > 0 && (
               <div className="text-red-500 text-sm pl-2">
@@ -167,9 +164,9 @@ export function Receipt() {
                             </span>
                           </div>
                         ))}
-                        { !getParticipantItems(participant.id) && 
+                        { !(getParticipantItems(participant.id) && getParticipantItems(participant.id).length > 0) && 
                           <div>
-                            <span>Não consumiu nada</span>
+                            <span className="text-zinc-400">Não consumiu nada</span>
                           </div> 
                         }
                       </div>
@@ -201,12 +198,9 @@ export function Receipt() {
             >Finalizar conta</button>
           </div>
       ) }
-      { !(getAllParticipants().length > 0) && (
-        <div className="w-full mt-40 flex text-sm flex-col gap-4 text-zinc-400 items-center justify-center text-center">
-          <img src={emptyBox} alt="empty box" />
-          <span>Nenhum participante adicionado</span>
-        </div>
-      )}
+      { !(getAllParticipants() && getAllParticipants().length > 0) && 
+        <EmptyList text="Nenhum participante adicionado" />
+      }
     </>
   )
 }
