@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import { toast } from "react-toastify"
 
 import { AddQtd } from "../components/add-qtd"
@@ -6,11 +6,14 @@ import { Select } from "../components/ui/select"
 import { useLocalStorage } from "../hooks/useLocalStorage"
 import { Participant, Item, Part } from "../types/all-types"
 
+import emptyBox from '../assets/empty-box.svg'
+
 export function Divide() {
   const [idSelectItem, setIdSelectItem] = useState('');
   const [refresh, setRefresh] = useState(false);
   const { setItem, getItem } = useLocalStorage()
 
+  const itemsList = useMemo(() => getItem('items'), [refresh])
 
   function getAllItems() {
     const items = getItem('items');
@@ -31,7 +34,6 @@ export function Divide() {
     const items = getItem('items')
     const newList = items.map((item:Item) => 
       item.id === id ? { ...item, amount: String(Number(item.amount) + 1) } : item )
-
     setItem('items', newList)
     setRefresh(!refresh)
   }
@@ -53,20 +55,28 @@ export function Divide() {
       return
     }
 
-    if (!getAllParts().find((part:Part) => 
+    if (!getAllParts()) {
+      setItem('parts', [{ idParticipant, idItem, part: 1 }])
+      setRefresh(!refresh)
+      return;
+    }
+
+    if (getAllParts().length > 0 && !getAllParts().find((part:Part) => 
       (part.idParticipant === idParticipant) && (part.idItem === idItem)
     )) {
-      setItem('parts', [{ idParticipant, idItem, part: 1 }])
+      const list = getAllParts()
+      setItem('parts', [...list, { idParticipant, idItem, part: 1 }])
+      setRefresh(!refresh)
       return;
     }
 
     const newList = getAllParts().map((part:Part) => 
       (part.idParticipant === idParticipant) && (part.idItem === idItem) 
-      ? { ...part, amount: String(Number(part.part) + 1) } 
+      ? { ...part, part: String(Number(part.part) + 1) } 
       : part 
     )
 
-    setItem('items', newList)
+    setItem('parts', newList)
     setRefresh(!refresh)
   }
 
@@ -79,11 +89,11 @@ export function Divide() {
 
     const newList = getAllParts().map((part:Part) => 
       (part.idParticipant === idParticipant) && (part.idItem === idItem) 
-      ? { ...part, amount: String(Number(part.part) - 1) } 
+      ? { ...part, part: String(Number(part.part) - 1) } 
       : part 
     )
 
-    setItem('items', newList)
+    setItem('parts', newList)
     setRefresh(!refresh)
   }
 
@@ -92,7 +102,8 @@ export function Divide() {
   }
 
   function getItemAmount() {
-    const item = getAllItems().find((item:Item) => item.id === idSelectItem)
+    if (!idSelectItem) return 0;
+    const item = itemsList.find((item:Item) => item.id === idSelectItem)
     return item ? item.amount : 0
   }
 
@@ -106,37 +117,47 @@ export function Divide() {
 
   return (
     <>
-      <div className="flex flex-row border-2 border-blueish w-full rounded-md py-4 px-2 gap-2 mb-2">
-        <Select
-          list={getAllItems()}
-          selectFn={(id:string) => handleSelectItem(id)}
-        />
-        <AddQtd 
-         qtd={getItemAmount()}
-         increaseFn={() => increaseAmount(idSelectItem)}
-         decreaseFn={() => decreaseAmount(idSelectItem)}
-         disabled={Boolean(idSelectItem)}
-        />
-      </div>
-      <div className="flex items-center justify-between text-zinc-500 text-sm px-2 mt-3 mb-1">
-        <span className="min-w-40 text-start">Nome</span>
-        <span className="w-28 text-center">Partes</span>
-      </div>
-      <div className="flex flex-col px-2 gap-3">
-        { getAllParticipants().map((participant: Participant) => (
-          <div 
-            key={participant.id}
-            className="flex items-center justify-between border-b border-zinc-700 py-2"
-          >
-            <span>{participant.name}</span>
+      { (getAllParticipants().length > 0) && (
+        <>
+          <div className="flex flex-row border-2 border-blueish w-full rounded-md py-4 px-2 gap-2 mb-2">
+            <Select
+              list={getAllItems()}
+              selectFn={(id:string) => handleSelectItem(id)}
+            />
             <AddQtd 
-              qtd={getParticipantParts(participant.id, idSelectItem)}
-              increaseFn={() => handleIncreaseParts(participant.id, idSelectItem)}
-              decreaseFn={() => handleDecreaseParts(participant.id, idSelectItem)}
+            qtd={getItemAmount()}
+            increaseFn={() => increaseAmount(idSelectItem)}
+            decreaseFn={() => decreaseAmount(idSelectItem)}
+            disabled={Boolean(!idSelectItem)}
             />
           </div>
-        ))}
-      </div>
+          <div className="flex items-center justify-between text-zinc-500 text-sm px-2 mt-3 mb-1">
+            <span className="min-w-40 text-start">Nome</span>
+            <span className="w-28 text-center">Partes</span>
+          </div>
+          <div className="flex flex-col px-2 gap-3">
+            { getAllParticipants().map((participant: Participant) => (
+              <div 
+                key={participant.id}
+                className="flex items-center justify-between border-b border-zinc-700 py-2"
+              >
+                <span>{participant.name}</span>
+                <AddQtd 
+                  qtd={getParticipantParts(participant.id, idSelectItem)}
+                  increaseFn={() => handleIncreaseParts(participant.id, idSelectItem)}
+                  decreaseFn={() => handleDecreaseParts(participant.id, idSelectItem)}
+                />
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+      { (!getAllParticipants() || !getAllItems()) && (
+        <div className="w-full mt-40 flex text-sm flex-col gap-4 text-zinc-400 items-center justify-center text-center">
+          <img src={emptyBox} alt="empty box" />
+          <span>Nenhum {!getAllParticipants() ? 'participante' : 'item'} adicionado</span>
+        </div>
+      ) }
     </>
   )
 }
