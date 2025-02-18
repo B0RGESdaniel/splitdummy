@@ -8,6 +8,8 @@
 
 💲No final da conta é possível ainda adicionar a taxa de serviço, que vem por padrão em 10%. Se não desejar incluir a taxa ou o estabelecimento não cobrar, basta definir o valor da taxa para 0.
 
+🛠️Desenvolvido utilizando React, Vite, Typescript e TailwindCSS
+
 ### Partes
 
 ➗As partes permitem que os itens sejam divididos tanto por quantidade quanto apenas um item para vários particpantes.
@@ -19,8 +21,6 @@ Exemplo:
 Supondo que 3 pessoas compraram 2 refrigerantes que custavam 15 reais cada. 
 
 O valor total seria 30 reais(15 reais x 2 unidades). Se cada pessoa ficasse com uma parte o valor de cada parte seria 10 reais(30 reais / 3 partes)
-
-🛠️Desenvolvida utilizando React, Vite, Typescript e TailwindCSS
 
 ## Passo a passo
 
