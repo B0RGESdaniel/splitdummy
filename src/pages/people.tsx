@@ -21,6 +21,7 @@ export function People() {
     const participants = getItem('participants')
     if (!participants) {
       setItem('participants', [{  id: uuid, name }])
+      setNameInput('')
       setRefresh(!refresh)
       return;
     }
