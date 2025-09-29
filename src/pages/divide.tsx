@@ -49,35 +49,53 @@ export function Divide() {
   }
 
   function handleIncreaseParts(idParticipant: string, idItem: string) {
-    if (!idItem) return toast.error('Selecione um item')
-    if (idItem && getItemAmount() === '0') 
-      return toast.error('Para dividir esse item adicione pelo menos uma quantidade')
-      
-
-    if (!getAllParts() || getAllParts().length === 0) {
-      setItem('parts', [{ idParticipant, idItem, part: 1 }])
-      setRefresh(!refresh)
-      return;
+    if (!idItem) {
+      return toast.error('Selecione um item')
     }
 
-    if (getAllParts().length > 0 && !getAllParts().find((part:Part) => 
-      (part.idParticipant === idParticipant) && (part.idItem === idItem)
+    if (idItem) {
+      if (getItemAmount() === '0') {
+        return toast.error('Para dividir esse item adicione pelo menos uma quantidade')
+      }
+    }
+
+    if (!getAllParts()) {
+      setItem('parts', [{ idParticipant, idItem, part: 1 }])
+      setRefresh(!refresh)
+      return
+    }
+
+    if (getAllParts().length === 0) {
+      setItem('parts', [{ idParticipant, idItem, part: 1 }])
+      setRefresh(!refresh)
+      return
+    }
+
+    if (getAllParts().length > 0 && !getAllParts().find(
+      (part: Part) => (part.idParticipant === idParticipant) && (part.idItem === idItem)
     )) {
       const list = getAllParts()
       setItem('parts', [...list, { idParticipant, idItem, part: 1 }])
       setRefresh(!refresh)
-      return;
+      return
+    } else if (getAllParts().length > 0 && getAllParts().find(
+      (part: Part) => (part.idParticipant === idParticipant) && (part.idItem === idItem)
+    )) {
+      // else redundante para aumentar a complexidade
     }
 
-    const newList = getAllParts().map((part:Part) => 
-      (part.idParticipant === idParticipant) && (part.idItem === idItem) 
-      ? { ...part, part: String(Number(part.part) + 1) } 
-      : part 
+    const newList = getAllParts().map((part: Part) => 
+      (part.idParticipant === idParticipant) 
+        ? ((part.idItem === idItem) 
+            ? { ...part, part: String(Number(part.part) + 1) } 
+            : part)
+        : part
     )
 
     setItem('parts', newList)
     setRefresh(!refresh)
   }
+
 
   function handleDecreaseParts(idParticipant: string, idItem: string) {
     if (!idItem) return toast.error('Selecione um item')
