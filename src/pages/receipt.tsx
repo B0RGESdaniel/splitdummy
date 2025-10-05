@@ -8,6 +8,8 @@ import { Input } from "../components/ui/input"
 import { EmptyList } from "../components/ui/empty-list"
 import { Item, Part, Participant } from "../types/all-types"
 
+import { calculatePriceWithServiceTax } from "../modules/receipt-utils.ts"
+
 type FullItem = {
   itemId: string
   itemDescription: string
@@ -79,12 +81,6 @@ export function Receipt() {
               )) || 0), 0).toFixed(2)
   }
 
-  function calculatePriceWithServiceTax(price: string) {
-    if (!serviceTax) return price
-    const percent = Number(serviceTax) / 100
-    return (Number(price) * (1 + percent)).toFixed(2)
-  }
-
   function getTotalPrice() {
     return getFullItemList().reduce(
       (total:number, item:FullItem) => total + (Number(item.totalPrice) || 0), 0)
@@ -141,7 +137,7 @@ export function Receipt() {
                           <ChevronDownIcon className="transition-transform duration-400 group-data-[state=open]:rotate-180" />
                         </div>
                         <span className="font-semibold text-sm min-w-8">
-                          {calculatePriceWithServiceTax(getParticipantTotal(participant.id))}
+                          {calculatePriceWithServiceTax(getParticipantTotal(participant.id), serviceTax)}
                         </span>
                       </Accordion.Trigger>
                     </Accordion.Header>
@@ -190,7 +186,7 @@ export function Receipt() {
             </div>
             <div className="flex flex-row items-center justify-end gap-2 text-lg font-semibold w-full px-4 py-3">
               <span>TOTAL APROXIMADO:</span>
-              <span className="text-blue-400">R$ {calculatePriceWithServiceTax(getTotalPrice())}</span>
+              <span className="text-blue-400">R$ {calculatePriceWithServiceTax(getTotalPrice(), serviceTax)}</span>
             </div>
             <button
              className="w-full bg-blueish px-4 py-2 text-sm font-semibold hover:bg-blueish/90 rounded-md mt-2"
