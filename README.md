@@ -1,8 +1,18 @@
 # Splitdummy
+## Plano de Teste
+- [Plano de Teste - SplitDummy](https://docs.google.com/document/d/1uj8cpWXjAN9HqLvM98GBDVysH3Cvd9Q1OnGVNUWDLdo/edit?usp=sharing)
+
+## Testes Manuais
+- [Caso de Teste - Divide](https://docs.google.com/document/d/1PCPgRfi3K1ra9vHQMc0QgeY5hNA6kfDyvbstReruuqw/edit?usp=sharing)
+- [Caso de Teste - Participantes](https://docs.google.com/document/d/1XsdDrSenO5NZJawJgXfeyN9DLAv6QEY94MM6ctsx5wQ/edit?usp=sharing)
+
+### Slide de apresentação 
+-[Slide de apresentação](https://docs.google.com/presentation/d/15mq2dUdt_M3D65YkpKG6ZdjggS56-ZTGGASTHvlcRGM/edit?usp=sharing) 
+
 
 ## Descrição
 
-👨‍💻O Splitdummy é uma aplicação web monousuário para dividir contas de bares e restaurantes com seus amigos.
+👨💻O Splitdummy é uma aplicação web monousuário para dividir contas de bares e restaurantes com seus amigos.
 
 👥É possível adicionar participantes, itens e depois dividir tudo por meio das **partes**.
 
