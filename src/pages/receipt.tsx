@@ -8,17 +8,15 @@ import { Input } from "../components/ui/input"
 import { EmptyList } from "../components/ui/empty-list"
 import { Item, Part, Participant } from "../types/all-types"
 
-import { calculatePriceWithServiceTax } from "../modules/receipt-utils.ts"
-
-type FullItem = {
-  itemId: string
-  itemDescription: string
-  itemAmount: string
-  totalParts: number
-  partPrice: string
-  totalPrice: number
-  participants: Part[],
-}
+import { 
+  calculatePriceWithServiceTax,
+  getParticipantTotal,
+  getParticipantItems,
+  getParticipantItemPrice,
+  getParticipantParts,
+  FullItem,
+  getTotalPrice,
+} from "../modules/receipt-utils.ts"
 
 export function Receipt() {
   const navigate = useNavigate()
@@ -52,38 +50,6 @@ export function Receipt() {
         participants: itemsParts,
       }
     })
-  }
-
-  function getParticipantParts(idParticipant: string, item: FullItem) {
-    return Number(item.participants.find((p: Part) => p.idParticipant === idParticipant)?.part)
-  }
-
-  function getParticipantItemPrice(part: number, partPrice: string) {
-    return (part * Number(partPrice)).toFixed(2) ?? '0,00'
-  }
-
-  function getParticipantItems(idParticipant: string) {
-    return getFullItemList().filter(
-      (item:FullItem) => item.participants.some(
-        (p:Part) => (p.idParticipant === idParticipant) && p.part > 0))
-  }
-
-  function getParticipantTotal(idParticipant: string) {
-    const items = getFullItemList().filter(
-      (item:FullItem) => item.participants.some(
-        (p:Part) => p.idParticipant === idParticipant))
-    return items.reduce(
-          (total: number, item:FullItem) => 
-            total + (
-              Number(getParticipantItemPrice(
-                getParticipantParts(idParticipant, item),
-                item.partPrice
-              )) || 0), 0).toFixed(2)
-  }
-
-  function getTotalPrice() {
-    return getFullItemList().reduce(
-      (total:number, item:FullItem) => total + (Number(item.totalPrice) || 0), 0)
   }
 
   function getNotDivivedItems() {
@@ -137,13 +103,13 @@ export function Receipt() {
                           <ChevronDownIcon className="transition-transform duration-400 group-data-[state=open]:rotate-180" />
                         </div>
                         <span className="font-semibold text-sm min-w-8">
-                          {calculatePriceWithServiceTax(getParticipantTotal(participant.id), serviceTax)}
+                          {calculatePriceWithServiceTax(getParticipantTotal(participant.id, getFullItemList()), serviceTax)}
                         </span>
                       </Accordion.Trigger>
                     </Accordion.Header>
                     <Accordion.Content>
                       <div className="bg-zinc-900 px-6 py-3 flex flex-col items-start gap-3 text-sm border-b-2 border-zinc-500">
-                        { getParticipantItems(participant.id) && getParticipantItems(participant.id).map((item:FullItem) => (
+                        { getParticipantItems(participant.id, getFullItemList()) && getParticipantItems(participant.id, getFullItemList()).map((item:FullItem) => (
                           <div key={item.itemId} className="flex flex-row gap-2 items-center w-full justify-between">
                             <span className="flex gap-2 text-zinc-400">
                               <span className="text-center min-w-8 text-white">
@@ -160,7 +126,7 @@ export function Receipt() {
                             </span>
                           </div>
                         ))}
-                        { !(getParticipantItems(participant.id) && getParticipantItems(participant.id).length > 0) && 
+                        { !(getParticipantItems(participant.id, getFullItemList()) && getParticipantItems(participant.id, getFullItemList()).length > 0) && 
                           <div>
                             <span className="text-zinc-400">Não consumiu nada</span>
                           </div> 
@@ -186,7 +152,7 @@ export function Receipt() {
             </div>
             <div className="flex flex-row items-center justify-end gap-2 text-lg font-semibold w-full px-4 py-3">
               <span>TOTAL APROXIMADO:</span>
-              <span className="text-blue-400">R$ {calculatePriceWithServiceTax(getTotalPrice(), serviceTax)}</span>
+              <span className="text-blue-400">R$ {calculatePriceWithServiceTax(getTotalPrice(getFullItemList()), serviceTax)}</span>
             </div>
             <button
              className="w-full bg-blueish px-4 py-2 text-sm font-semibold hover:bg-blueish/90 rounded-md mt-2"
