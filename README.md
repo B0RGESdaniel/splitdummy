@@ -3,7 +3,7 @@
 - [Plano de Teste - SplitDummy](https://docs.google.com/document/d/1uj8cpWXjAN9HqLvM98GBDVysH3Cvd9Q1OnGVNUWDLdo/edit?usp=sharing)
 
 ## Testes Manuais
-- [Caso de Teste - Divide e recibo](https://docs.google.com/document/d/1PCPgRfi3K1ra9vHQMc0QgeY5hNA6kfDyvbstReruuqw/edit?usp=sharing)
+- [Caso de Teste - Divide e Recibo](https://docs.google.com/document/d/1PCPgRfi3K1ra9vHQMc0QgeY5hNA6kfDyvbstReruuqw/edit?usp=sharing)
 - [Caso de Teste - Participantes](https://docs.google.com/document/d/1XsdDrSenO5NZJawJgXfeyN9DLAv6QEY94MM6ctsx5wQ/edit?usp=sharing)
 
 ### Slide de apresentação 
